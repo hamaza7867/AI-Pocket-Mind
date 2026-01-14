@@ -122,7 +122,9 @@ lib/
 
 ## 📄 License
 
-MIT License. See [LICENSE](LICENSE) for details.
+**Copyright (c) 2026 Hamaza. All Rights Reserved.**
+
+This project is proprietary software. Unauthorized copying, modification, distribution, or use for commercial purposes is strictly prohibited. For personal use only.
 
 ## 🆘 Support
 
