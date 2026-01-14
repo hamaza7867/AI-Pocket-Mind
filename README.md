@@ -1,28 +1,27 @@
 # 🤖 AI Pocket Mind
 
-A powerful multi-modal AI assistant app with hybrid intelligence modes and privacy-first design.
+A powerful multi-modal AI assistant app featuring a **Dual AI Core** (BYOAPI & Desktop Client) and privacy-first design.
 
 ## ✨ Features
 
-- **🧠 Hybrid AI Modes**:
-  - Cloud API (OpenAI, Groq, DeepSeek, Mistral, etc.)
-  - Local Network (Ollama via Desktop Bridge)
-  - RAG Knowledge Base (Python vector DB backend)
+- **🧠 Dual AI Modes**:
+  - **☁️ Cloud (BYOAPI)**: Direct connection to OpenAI, Groq, DeepSeek, Mistral, and compatible APIs with your own keys.
+  - **🖥️ Desktop Client**: Connects to the **PocketMind Desktop Bridge** for local, private AI processing (Ollama/Local LLM).
 
 - **🎙️ Multi-Modal**:
   - Voice interaction (STT + TTS)
-  - Image analysis
-  - Document Q&A (PDF/TXT)
+  - Image analysis (Vision Models)
+  - PDF/Document Context (RAG via Desktop Bridge)
 
 - **🔒 Privacy-First**:
-  - Local-first SQLite storage
-  - Cloud sync with Supabase (optional)
-  - Secure environment variable management
+  - Local-first History (SQLite)
+  - **Supabase Integration** for syncing API configurations (Optional)
+  - Bio-Lock Security (Fingerprint/FaceID)
 
 - **🎨 Professional UI**:
-  - Futuristic glassmorphism theme
-  - Dark mode support
-  - Smooth animations
+  - Futuristic Glassmorphism aesthetics
+  - Dynamic Dark/Light themes
+  - Smooth animations & transitions
 
 ## 🚀 Quick Start
 
@@ -30,32 +29,29 @@ A powerful multi-modal AI assistant app with hybrid intelligence modes and priva
 
 - Flutter 3.0+ ([Install Flutter](https://flutter.dev/docs/get-started/install))
 - Android Studio / VS Code
-- Android SDK (for Android builds)
-- Xcode (for iOS builds, macOS only)
+- A running instance of **PocketMind Desktop Bridge** (for Local Mode)
+- Supabase Project (for Config Sync)
 
 ### Installation
 
 1. **Clone the repository**:
    ```bash
    git clone <repository-url>
-   cd ai_pocket_mind
+   cd ai_pocket_mind/mobile
    ```
 
 2. **🔑 CRITICAL: Set up environment variables**:
    ```bash
    # Copy the example file
-   copy .env.example .env
+   cp .env.example .env
    
-   # Edit .env and add your API keys
-   notepad .env
+   # Edit .env and add your keys
    ```
 
    Required keys in `.env`:
    ```env
    SUPABASE_URL=https://your-project.supabase.co
    SUPABASE_ANON_KEY=your_supabase_anon_key
-   GOOGLE_WEB_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
-   TAVILY_API_KEY=tvly-your-tavily-key
    ```
 
 3. **Install dependencies**:
@@ -65,188 +61,71 @@ A powerful multi-modal AI assistant app with hybrid intelligence modes and priva
 
 4. **Run the app**:
    ```bash
-   # Android/iOS
+   # Android
    flutter run
-   
-   # Windows Desktop
-   flutter run -d windows
-   
-   # Web
-   flutter run -d chrome
+
+   # Release Build
+   flutter build apk --release
    ```
-
-## 🔑 Getting API Keys
-
-### Supabase (Required)
-
-1. Go to [supabase.com](https://supabase.com)
-2. Create a new project
-3. Go to Settings → API
-4. Copy `Project URL` and `anon/public key`
-
-### Google Sign-In (Optional)
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Create a project
-3. Enable Google Sign-In API
-4. Create OAuth 2.0 credentials (Web application)
-5. Copy the Web Client ID
-
-### Tavily API (Optional - for web search)
-
-1. Go to [tavily.com](https://tavily.com)
-2. Sign up and get API key
 
 ## 🏗️ Architecture
 
 ```
-
 ┌──────────────────────────────────┐
-│     AI Pocket Mind               │
-│  (Multi-Modal AI Assistant)      │
+│     AI Pocket Mind (Mobile)      │
+│     (Dual Mode Controller)       │
 └─────────────┬────────────────────┘
               │
       ┌───────┴───────┐
       ▼               ▼
-  Local-First    Cloud Sync
-  (SQLite)       (Supabase)
+  Cloud Mode      Desktop Mode
+   (BYOAPI)        (Client)
       │               │
-      └───────┬───────┘
-              ▼
-       ┌─────────────┐
-       │  AI Modes   │
-       ├─────────────┤
-       │ Cloud API   │ ← OpenAI, Groq, etc.
-       │ Network     │ ← Ollama Desktop Bridge
-       │ RAG         │ ← Python Vector DB
-       └─────────────┘
+      │        ┌──────▼───────┐
+      │        │ Desktop      │
+      │        │ Bridge       │
+      │        └──────┬───────┘
+      │               ▼
+  ┌───▼───┐       ┌───────┐
+  │ APIs  │       │ Local │
+  └───────┘       │ LLM   │
+                  └───────┘
 ```
 
-## 📱 Building for Production
-
-### Android APK
-
-```bash
-flutter build apk --release
-```
-
-Output: `build/app/outputs/flutter-apk/app-release.apk`
-
-### iOS (macOS only)
-
-```bash
-flutter build ios --release
-```
-
-## 🛠️ Development
-
-### Project Structure
+## 🛠️ Project Structure
 
 ```
 lib/
-├── main.dart              # App entry point
-├── providers/             # State management
-│   ├── chat_provider.dart
+├── main.dart                 # App Entry
+├── providers/                # State Management (Provider)
+│   ├── chat_provider.dart    # Core Chat Logic
 │   └── theme_provider.dart
-├── screens/               # UI screens
+├── screens/                  # UI Layers
 │   ├── chat_screen.dart
-│   ├── login_screen.dart
-│   ├── settings_screen.dart
+│   ├── settings_screen.dart  # Dual Mode Configuration
+│   ├── wizard_screen.dart    # Onboarding
 │   └── ...
-├── services/              # Business logic
-│   ├── ai_service.dart
-│   ├── database_helper.dart
-│   ├── supabase_service.dart
-│   └── app_config.dart    # 🔒 Secure env vars
-├── widgets/               # Reusable components
-└── utils/                 # Utilities
-```
-
-### Running Tests
-
-```bash
-flutter test
-```
-
-### Code Quality
-
-```bash
-# Analyze code
-flutter analyze
-
-# Auto-fix issues
-flutter fix --apply
-
-# Format code
-flutter format lib/
+├── services/                 # Business Logic
+│   ├── ai_service.dart       # Abstract AI Interface
+│   ├── supabase_service.dart # Config persistence
+│   ├── tools_service.dart    # Function Calling Logic
+│   ├── knowledge_service.dart# RAG/Memory Logic
+│   └── auth_service.dart     # Bio-Lock & Auth
+└── utils/                    # Shared Utilities
 ```
 
 ## 🔒 Security
 
-**IMPORTANT**: This app uses environment variables for API keys.
-
-✅ **DO**:
-- Keep `.env` file LOCAL only
-- Use `.env.example` as a template
-- Rotate keys if accidentally exposed
-
-❌ **DON'T**:
-- Commit `.env` to version control
-- Share your `.env` file
-- Hardcode API keys in source code
-
-## 🐛 Troubleshooting
-
-### "Missing environment variable" error
-
-**Solution**: Make sure `.env` file exists and contains all required keys.
-
-```bash
-# Check if .env exists
-dir .env
-
-# If not, copy from example
-copy .env.example .env
-```
-
-### Build errors
-
-```bash
-# Clean build
-flutter clean
-flutter pub get
-flutter build apk
-```
-
-### Supabase connection issues
-
-1. Verify `SUPABASE_URL` and `SUPABASE_ANON_KEY` in `.env`
-2. Check internet connection
-3. Verify Supabase project is active
-
-## 📚 Additional Resources
-
-- [Flutter Documentation](https://flutter.dev/docs)
-- [Supabase Flutter Guide](https://supabase.com/docs/guides/getting-started/quickstarts/flutter)
-- [Provider State Management](https://pub.dev/packages/provider)
+**IMPORTANT**: This app uses environment variables for Supabase keys.
+- **DO NOT** commit `.env` to version control.
+- **DO NOT** hardcode API keys in the source.
 
 ## 📄 License
 
-[Add your license here]
-
-## 👥 Contributing
-
-[Add contribution guidelines]
+MIT License. See [LICENSE](LICENSE) for details.
 
 ## 🆘 Support
 
 For issues and questions:
-- GitHub Issues: [Add link]
-- Email: [Add email]
-
----
-
-**Version**: 1.0.0+22  
-**Last Updated**: January 2026
-
-**🔐 Security Notice**: This project uses secure environment variable management. Never commit API keys to version control!
+- GitHub Issues: [https://github.com/hamaza7867/AI-Pocket-Mind/issues](https://github.com/hamaza7867/AI-Pocket-Mind/issues)
+- Email: hamaza7867@gmail.com

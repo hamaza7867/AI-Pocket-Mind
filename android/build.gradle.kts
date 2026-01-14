@@ -1,4 +1,4 @@
-extra["kotlin_version"] = "1.9.0"
+extra["kotlin_version"] = "2.1.0"
 
 allprojects {
     repositories {
