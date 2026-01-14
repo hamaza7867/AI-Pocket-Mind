@@ -60,3 +60,9 @@ debug-info/
 *.db
 *.db-shm
 *.db-wal
+
+# Desktop Bridge
+backend/venv/
+backend/__pycache__/
+dashboard/node_modules/
+dashboard/dist/
