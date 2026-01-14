@@ -36,7 +36,7 @@ A powerful multi-modal AI assistant app featuring a **Dual AI Core** (BYOAPI & D
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/hamaza7867/AI-Pocket-Mind.git
    cd ai_pocket_mind/mobile
    ```
 
