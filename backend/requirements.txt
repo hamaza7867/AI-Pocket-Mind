@@ -1,0 +1,6 @@
+flask
+flask-cors
+chromadb
+pypdf
+sentence-transformers
+tf-keras
